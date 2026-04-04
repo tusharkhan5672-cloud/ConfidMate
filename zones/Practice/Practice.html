@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Practice Zone - ConfidMate</title>
+  <link rel="stylesheet" href="practice.css">
+</head>
+<body>
+
+  <!-- NAVBAR -->
+<nav class="navbar">
+    <h2><a href="../../index.html">ConfidMate</a></h2>
+
+    <div class="nav-right">
+      <div class="menu-toggle" id="menu-toggle">☰</div>
+    </div>
+
+    <ul class="nav-links" id="nav-links" >
+      <li><a href="../../index.html">Home</a></li>
+      <li><a href="#features">Features</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#impact">Impact</a></li>
+      <li><a href="#contact">Contact</a></li>
+
+      <li id="auth-area"></li>
+    </ul>
+  </nav>
+
+  <!-- TITLE -->
+  <section class="title">
+    <div>
+      <h3>Welcome to your Practice Zone.</h3>
+      <p>Build confidence through repetition, prompts, and safe AI conversations.</p>
+    </div>
+  </section>
+
+  <!-- INTRO CARD -->
+  <section class="zones" id="practice-features">
+    <div class="card glass">
+      <h4>Practice with Purpose</h4>
+      <p>
+        The Practice Zone helps users turn nervous energy into communication skill.
+        With real-life prompts, timed speaking rounds, and AI-powered practice,
+        this space is designed to make expression feel easier with every session.
+      </p>
+
+<h4>Features:</h4>
+<ul class="features">
+  <li>🎤 Real-life speaking prompts to practice everyday conversations</li>
+  <li>⏱ Timed challenges to build fluency and reduce hesitation</li>
+  <li>🤖 AI practice partner that guides and responds naturally</li>
+  <li>🎬 Guided video sessions to learn and practice step-by-step</li>
+  <li>📈 Confidence feedback after each practice round</li>
+  <li>🔥 Practice tracking with sessions, streaks, and progress stats</li>
+</ul>
+  </section>
+
+  <!-- SCENARIO SECTION -->
+  <section class="zones" id="scenario-section">
+    <div class="card glass">
+      <h3>Choose a Practice Scenario</h3>
+      <p>Select one and get a speaking prompt instantly.</p>
+
+      <div class="scenario-buttons">
+        <button class="premium-btn" onclick="setScenario('intro')">👋 Introduce Yourself</button>
+        <button class="premium-btn" onclick="setScenario('smalltalk')">💬 Small Talk</button>
+        <button class="premium-btn" onclick="setScenario('help')">🙋 Ask for Help</button>
+        <button class="premium-btn" onclick="setScenario('interview')">🎤 Interview Practice</button>
+      </div>
+
+      <div class="prompt-box glass-light">
+        <h4>Today’s Prompt</h4>
+        <p id="practice-prompt">Choose a scenario to begin your speaking practice.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- TIMER SECTION -->
+  <section class="zones">
+    <div class="card glass">
+      <h3>Timed Speaking Challenge</h3>
+      <p>Pick a time and practice speaking without stopping.</p>
+
+      <div class="timer-buttons">
+        <button class="premium-btn" onclick="startTimer(15)">15s</button>
+        <button class="premium-btn" onclick="startTimer(30)">30s</button>
+        <button class="premium-btn" onclick="startTimer(60)">60s</button>
+      </div>
+
+      <div class="timer-display glass-light">
+        <span id="timer-text">Ready to practice</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- AI PRACTICE CHAT -->
+  <section class="zones" id="practice-chat">
+    <div class="card glass">
+      <h3>🤖 AI Practice Partner</h3>
+      <p>Practice conversations safely before real situations.</p>
+
+      <div class="chat-container">
+        <div class="chat-box" id="chatBox">
+          <div class="ai-message">Hi! I’m your practice partner. Choose a scenario or say hello to begin.</div>
+        </div>
+
+        <input type="text" id="userInput" placeholder="Type your practice message..." />
+        <button id="sendBtn">Send</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEEDBACK -->
+  <section class="zones">
+    <div class="card glass">
+      <h3>How did that feel?</h3>
+      <p>Rate your confidence after practice.</p>
+
+      <div class="feedback-buttons">
+        <button class="feedback-btn" onclick="setFeedback('easy')">😊 Easy</button>
+        <button class="feedback-btn" onclick="setFeedback('okay')">🙂 Okay</button>
+        <button class="feedback-btn" onclick="setFeedback('hard')">😓 Hard</button>
+      </div>
+
+      <p id="feedback-result"></p>
+    </div>
+  </section>
+
+  <!-- Guided Practice Sessions -->
+   <section class="zones">
+  <div class="card glass">
+    <h3>🎬 Guided Practice Sessions</h3>
+    <p>Follow along with real speaking exercises and improve your confidence step by step.</p>
+
+    <div class="video-buttons">
+      <button class="premium-btn" onclick="openVideo('intro')">👋 Intro Practice</button>
+      <button class="premium-btn" onclick="openVideo('confidence')">🔥 Confidence Boost</button>
+      <button class="premium-btn" onclick="openVideo('conversation')">💬 Conversation Skills</button>
+      <button class="premium-btn" onclick="openVideo('interview')">🎤 Interview Practice</button>
+    </div>
+
+    <p id="video-feedback"></p>
+  </div>
+</section>
+
+ <!-- Practice Zone. -->
+<section class="zones">
+  <div class="card glass">
+    <h3>📈 Your Practice Progress</h3>
+
+    <div class="progress-stats">
+      <div class="progress-box">
+        <h4 id="today-sessions">0</h4>
+        <p>Today’s Sessions</p>
+      </div>
+
+      <div class="progress-box">
+        <h4 id="total-rounds">0</h4>
+        <p>Total Practice Rounds</p>
+      </div>
+
+      <div class="progress-box">
+        <h4 id="weekly-streak">0</h4>
+        <p>Weekly Streak</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+  <script src="practice.js"></script>
+</body>
+</html>

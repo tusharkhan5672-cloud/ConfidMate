@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Growth Zone - ConfidMate</title>
+  <link rel="stylesheet" href="growth.css">
+</head>
+<body>
+
+  <!-- NAVBAR -->
+<nav class="navbar">
+    <h2><a href="../../index.html">ConfidMate</a></h2>
+
+    <div class="nav-right">
+      <div class="menu-toggle" id="menu-toggle">☰</div>
+    </div>
+
+    <ul class="nav-links" id="nav-links" >
+      <li><a href="../../index.html">Home</a></li>
+      <li><a href="#features">Features</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#impact">Impact</a></li>
+      <li><a href="#contact">Contact</a></li>
+
+      <li id="auth-area"></li>
+    </ul>
+  </nav>
+
+  <!-- TITLE -->
+  <section class="title">
+    <div>
+      <h3>Welcome to your Growth Zone.</h3>
+      <p>Take action in real life, reflect on your experience, and grow through consistency.</p>
+    </div>
+  </section>
+
+  <!-- INTRO -->
+  <section class="zones" id="growth-features">
+    <div class="card glass">
+      <h4>Real Growth Begins Here</h4>
+      <p>
+        This zone helps you step outside your comfort zone and take real-world action.
+        Complete daily challenges, reflect on how they felt, and build true confidence through experience.
+      </p>
+
+  <h4>Features:</h4>
+<ul class="features">
+  <li>🚀 Real-world challenges to build confidence through action</li>
+  <li>📅 Daily tasks designed for real-life social situations</li>
+  <li>🪜 Fear-to-confidence ladder with level-based progression</li>
+  <li>📊 Growth score with weekly activity and progress stats</li>
+  <li>✅ Completion tracking with success rate insights</li>
+  <li>🧠 Reflection system to understand your experiences</li>
+
+</ul>
+    </div>
+  </section>
+
+  <!-- TODAY CHALLENGE -->
+  <section class="zones" id="challenge-section">
+    <div class="card glass">
+      <h3>🔥 Today's Challenge</h3>
+      <p id="challenge-text">Click below to get your challenge for today.</p>
+
+      <div class="growth-buttons">
+        <button class="premium-btn" onclick="generateChallenge()">Get Challenge</button>
+        <button class="premium-btn" onclick="completeChallenge()">✅ Done</button>
+        <button class="secondary" onclick="skipChallenge()">Skip</button>
+      </div>
+
+      <p id="challenge-status"></p>
+    </div>
+  </section>
+
+   <!-- score -->
+
+<!--<section class="zones">
+  <div class="card glass">
+    <h3>📊 Growth Score</h3>
+    <p>Track how consistently you're taking action in real life.</p>
+
+    <div class="progress-stats">
+      <div class="progress-box">
+        <h4 id="completed-count">0</h4>
+        <p>Challenges Completed</p>
+      </div>
+
+      <div class="progress-box">
+        <h4 id="success-rate">0%</h4>
+        <p>Success Rate</p>
+      </div>
+
+      <div class="progress-box">
+        <h4 id="weekly-activity">0</h4>
+        <p>Weekly Activity</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+  <!-- REFLECTION -->
+  <section class="zones">
+    <div class="card glass">
+      <h3>🧠 Reflection</h3>
+      <p>How did it feel after doing the challenge?</p>
+
+      <div class="feedback-buttons">
+        <button class="feedback-btn" onclick="setGrowthFeedback('easy')">😊 Easy</button>
+        <button class="feedback-btn" onclick="setGrowthFeedback('okay')">🙂 Okay</button>
+        <button class="feedback-btn" onclick="setGrowthFeedback('hard')">😓 Hard</button>
+      </div>
+
+      <textarea id="reflection-note" placeholder="Write a few words about what happened..."></textarea>
+      <button class="premium-btn" onclick="saveReflectionNote()">Save Reflection</button>
+
+      <p id="reflection-result"></p>
+    </div>
+  </section>
+
+  <section class="zones">
+  <div class="card glass">
+    <h3>🪜 Fear to Confidence Ladder</h3>
+    <p>Move step by step. Every completed level brings you closer to real confidence.</p>
+
+    <div class="ladder-box">
+      <div class="ladder-level" id="level-1">Level 1 → Say hi</div>
+      <div class="ladder-level" id="level-2">Level 2 → Small talk</div>
+      <div class="ladder-level" id="level-3">Level 3 → Longer conversation</div>
+      <div class="ladder-level" id="level-4">Level 4 → Group interaction</div>
+      <div class="ladder-level" id="level-5">Level 5 → Public speaking</div>
+    </div>
+
+    <p id="ladder-status"></p>
+  </div>
+</section>
+
+
+
+
+  <!-- PROGRESS -->
+  <section class="zones" id="progress-section">
+    <div class="card glass">
+      <h3>📈 Your Growth Progress</h3>
+
+      <div class="progress-stats">
+        <div class="progress-box">
+          <h4 id="today-completed">0</h4>
+          <p>Today’s Completed</p>
+        </div>
+
+        <div class="progress-box">
+          <h4 id="total-completed">0</h4>
+          <p>Total Challenges</p>
+        </div>
+
+        <div class="progress-box">
+          <h4 id="weekly-streak">0</h4>
+          <p>Weekly Streak</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script src="growth.js"></script>
+</body>
+</html>

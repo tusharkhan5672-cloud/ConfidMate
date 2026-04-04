@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Comfort Zone - ConfidMate</title>
+  <link rel="stylesheet" href="../Comfort/comfort.css">
+</head>
+<body>
+
+
+<!-- NAVBAR -->
+<nav class="navbar">
+    <h2><a href="../../index.html">ConfidMate</a></h2>
+
+    <div class="nav-right">
+      <div class="menu-toggle" id="menu-toggle">☰</div>
+    </div>
+
+    <ul class="nav-links" id="nav-links" >
+      <li><a href="../../index.html">Home</a></li>
+      <li><a href="#features">Features</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#impact">Impact</a></li>
+      <li><a href="#contact">Contact</a></li>
+
+      <li id="auth-area"></li>
+    </ul>
+  </nav>
+  
+    <section class="title">
+    <div>
+      <h3>Welcome to your Comfort Zone.</h3>
+<p>Ease into confidence gently — relax, reset your mind, and take your first step without pressure.</p>    </div>
+  </section>
+
+  <!-- ABOUT / INTRO CARD -->
+  <section class="zones">
+    <div class="card glass">
+      <h4>Start with Calm</h4>
+      <p>Confidence begins with comfort. In the Comfort Zone, users check in with their emotions before practice. A simple mood tracker helps identify stress levels, while guided breathing and relaxation tips prepare them for the stage.</p>
+
+<h4>Features:</h4>
+<ul class="features">
+  <li>😊 Smart mood tracking to understand your emotional state</li>
+  <li>🫁 Guided breathing sessions with smooth calming animations</li>
+  <li>💙 Daily relaxation tips to reset your mindset</li>
+  <li>🎧 Ambient sound therapy (rain, white noise, soft music)</li>
+  <li>🧠 Personalized calm experience based on your activity</li>
+</ul>
+    </div>
+  </section>
+
+
+
+<!-- mood -->
+
+  <div class="mood-section">
+  <h3>How are you feeling?</h3>
+
+  <div class="moods">
+    <button onclick="setMood('happy')">😄</button>
+    <button onclick="setMood('neutral')">😐</button>
+    <button onclick="setMood('sad')">😟</button>
+    <button onclick="setMood('anxious')">😰</button>
+  </div>
+
+  <p id="mood-result"></p>
+</div>
+
+<!-- breathing -->
+<div class="zones">
+
+  <div class="card glass">
+    <div class="breathing-section">
+      <h3>Take a deep breath 🫁</h3>
+
+      <div class="circle" id="circle"></div>
+
+      <p id="breath-text">Click start to relax</p>
+
+      <div class="controls">
+        <button onclick="startBreathing()">Start</button>
+        <button onclick="stopBreathing()" class="secondary">Stop</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+  <!-- AI ASSISTANT CHAT CARD -->
+  <section class="zones">
+    <div class="card glass">
+      <h3>💬 AI Assistant</h3>
+      <p>Interact with your AI. Try greetings, jokes, or ask for the time!</p>
+
+      <div class="chat-container">
+        <div class="chat-box" id="chatBox">
+<div class="ai-message">Hey, I’m here with you. You can talk to me about how you’re feeling, ask for a little encouragement, or just say hi 💙</div>        </div>
+        <input type="text" id="userInput" placeholder="Type a message..." />
+        <button id="sendBtn">Send</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- audio -->
+
+<section class="zones">
+  <div class="card glass">
+    <h3>🎧 Calm Sounds</h3>
+    <p>Pick a sound to relax your mind.</p>
+
+    <div class="sound-buttons">
+      <button onclick="playSound('rain')" class="premium-btn" id="btn-rain">Rain 🌧️</button>
+      <button onclick="playSound('whiteNoise')" class="premium-btn" id="btn-white">White Noise</button>
+      <button onclick="playSound('softMusic')" class="premium-btn" id="btn-soft">Soft Music 🎵</button>
+    </div>
+
+    <button id="stop-btn" onclick="stopSound()" class="stop-btn">❌</button>
+
+    <audio id="audio-player" loop></audio>
+  </div>
+</section>
+
+
+ <!-- tips -->
+
+<section class="zones">
+  <div class="card glass">
+    <div class="mind-section">
+      <h3>Relax your mind 💭</h3>
+
+      <p id="mind-tip">You don’t need to be perfect.</p>
+
+      <button onclick="newTip()" class="premium-btn">New Thought</button>
+    </div>
+  </div>
+</section>
+
+  <script src="comfort.js"></script>
+</body>
+</html>

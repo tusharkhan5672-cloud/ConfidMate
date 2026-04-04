@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ConfidMate</title>
+  <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+<h2 class="brand"><a href="index.html">ConfidMate</a></h2>
+    <div class="nav-right">
+      <div class="menu-toggle" id="menu-toggle">☰</div>
+    </div>
+
+    <ul class="nav-links" id="nav-links" >
+      <li><a href="index.html">Home</a></li>
+      <li><a href="features/features.html">Features</a></li>
+      <li><a href="about/about.html">About</a></li>
+      <li><a href="impact/impact.html">Impact</a></li>
+      <li><a href="contact/contact.html">Contact</a></li>
+
+      <li id="auth-area"></li>
+    </ul>
+  </nav>
+  
+
+<!-- HERO -->
+<section class="hero glass" id="heroSection">
+  <div class="hero-emoji-layer" id="heroEmojiLayer" aria-hidden="true"></div>
+  <div class="hero-ripple-layer" id="heroRippleLayer" aria-hidden="true"></div>
+
+  <div class="hero-content">
+    <h1>No More Overthinking</h1>
+    <h2>Just Confidence With ConfidMate!</h2>
+    <p>
+      ConfidMate is your AI-powered confidence coach. Practice, Grow & Transform your communication skills with real-time feedback.
+    </p>
+
+    <div class="buttons">
+      <button class="primary" id="startBtn">Get Started</button>
+      <button class="secondary" id="exploreBtn">Explore Features</button>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST -->
+<section class="trust-scroll-reveal">
+  <p>Helping you show up better, every single day ;)</p>
+</section>
+
+<!-- ZONES -->
+<section class="zones">
+
+<a href="zones/Comfort/comfort.html" target="_blank" class="card-link">
+  <div class="card glass">
+    <h3>Comfort Zone</h3>
+    <p>Start where you feel safe. Build awareness and understand your current confidence level.</p>
+  </div>
+</a>
+
+<a href="zones/Practice/Practice.html" target="_blank" class="card-link">
+  <div class="card glass">
+    <h3>Practice Zone</h3>
+    <p>Practice speaking, expressing, and communicating in a relaxed environment without pressure.</p>
+  </div>
+</a>
+
+
+<a href="zones/Growth/Growth.html" target="_blank" class="card-link">
+  <div class="card glass">
+    <h3>Growth Zone</h3>
+    <p>Take small challenges that push your limits and help you improve step by step.</p>
+  </div>
+</a>
+
+
+<a href="zones/confidence/confidence.html" target="_blank" class="card-link">
+  <div class="card glass">
+    <h3>Confidence Zone</h3>
+    <p>Apply your confidence in real situations and become comfortable expressing yourself anywhere.</p>
+  </div>
+</a>  
+
+</section>
+
+<!-- todays focus -->
+<section class="dashboard-section" id="today-focus-section">
+  <div class="today-focus-card glass">
+    <div class="today-focus-top">
+      <div>
+        <h2>🎯 Today’s Focus</h2>
+        <p>A small plan for today. Just show up and take one step at a time.</p>
+      </div>
+
+<button class="focus-btn" id="startFocusBtn">Start Now</button>    </div>
+
+<div class="focus-tasks" id="focusTasks">
+
+  <div class="focus-task">
+    <span class="focus-icon">😌</span>
+    <div>
+      <h4>Pause for a second — just breathe</h4>
+      <p>No rush. Take a few slow breaths and let your mind settle.</p>
+    </div>
+  </div>
+
+  <div class="focus-task">
+    <span class="focus-icon">🎤</span>
+    <div>
+      <h4>Say something out loud today</h4>
+      <p>Doesn’t matter what — just get used to hearing your own voice.</p>
+    </div>
+  </div>
+
+  <div class="focus-task">
+    <span class="focus-icon">💬</span>
+    <div>
+      <h4>Start one small conversation</h4>
+      <p>Even a simple “hey” or “how’s your day” is enough.</p>
+    </div>
+  </div>
+
+  <div class="focus-task">
+    <span class="focus-icon">🚀</span>
+    <div>
+      <h4>Do something you’d normally avoid</h4>
+      <p>That slight discomfort? That’s exactly where growth happens.</p>
+    </div>
+  </div>
+
+  <div class="focus-task">
+    <span class="focus-icon">🧠</span>
+    <div>
+      <h4>Notice how you felt after speaking</h4>
+      <p>Not judging — just observing. That awareness builds confidence.</p>
+    </div>
+  </div>
+
+  <div class="focus-task">
+    <span class="focus-icon">🔥</span>
+    <div>
+      <h4>Don’t aim for perfect — just show up</h4>
+      <p>Confidence isn’t clean. It’s built by trying anyway.</p>
+    </div>
+  </div>
+
+</div>
+
+    <p class="focus-message" id="focusMessage">Small steps still count. Start with one.</p>
+  </div>
+</section>
+
+<!-- MINI SCORES -->
+<section class="dashboard-section" id="progress-snapshot-section">
+  <div class="progress-snapshot-card glass">
+    <div class="snapshot-top">
+      <div>
+        <h2>📊 Your Progress Snapshot</h2>
+        <p>A quick look at how your journey is moving right now.</p>
+      </div>
+
+      <a href="dashboard/dashboard.html" class="snapshot-link-btn">View Dashboard</a>
+    </div>
+
+    <div class="snapshot-grid">
+      <div class="snapshot-box">
+        <span class="snapshot-icon">🔥</span>
+        <h3 id="snapshot-streak">0</h3>
+        <p>Weekly Streak</p>
+      </div>
+
+      <div class="snapshot-box">
+        <span class="snapshot-icon">🎤</span>
+        <h3 id="snapshot-practice">0</h3>
+        <p>Practice Sessions</p>
+      </div>
+
+      <div class="snapshot-box">
+        <span class="snapshot-icon">🚀</span>
+        <h3 id="snapshot-growth">0</h3>
+        <p>Challenges Done</p>
+      </div>
+
+      <div class="snapshot-box">
+        <span class="snapshot-icon">💬</span>
+        <h3 id="snapshot-ai">0</h3>
+        <p>AI Interactions</p>
+      </div>
+    </div>
+
+    <div class="snapshot-status glass">
+      <h4 id="snapshot-status-title">You’re getting started</h4>
+      <p id="snapshot-status-text">Small steps still count. Keep showing up and your confidence will follow.</p>
+    </div>
+  </div>
+</section>
+
+<!-- about -->
+<section class="confidmate-story-section" id="confidmate-story">
+  <div class="story-bg-blur blur-one"></div>
+  <div class="story-bg-blur blur-two"></div>
+
+  <div class="story-inner">
+    <div class="story-header" id="storyHeader">
+      <h2>ConfidMate</h2>
+      <p>
+        Confidence is not something you fake here. It’s something you build —
+        slowly, honestly, and step by step.
+      </p>
+    </div>
+
+    <div class="story-journey">
+      <div class="journey-step" id="step1">
+        <span class="journey-no">01</span>
+        <h3>Comfort</h3>
+        <p>Start by slowing down, settling your thoughts, and feeling safe in your own space.</p>
+      </div>
+
+      <div class="journey-arrow">→</div>
+
+      <div class="journey-step" id="step2">
+        <span class="journey-no">02</span>
+        <h3>Practice</h3>
+        <p>Use repetition, prompts, and guided conversations to build comfort with expression.</p>
+      </div>
+
+      <div class="journey-arrow">→</div>
+
+      <div class="journey-step" id="step3">
+        <span class="journey-no">03</span>
+        <h3>Growth</h3>
+        <p>Take small real-world actions that push you slightly beyond what feels easy.</p>
+      </div>
+
+      <div class="journey-arrow">→</div>
+
+      <div class="journey-step" id="step4">
+        <span class="journey-no">04</span>
+        <h3>Confidence</h3>
+        <p>Turn repeated effort into presence, self-trust, and the ability to show up fully.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+
+  <div class="footer-wrapper">
+
+    <!-- TOP CTA -->
+    <div class="footer-cta">
+      <h2>Start building real confidence today.</h2>
+      <p>No pressure. Just small steps that actually work.</p>
+      <a href="zones/Comfort/comfort.html" class="footer-btn">Get Started</a>
+    </div>
+
+    <!-- MAIN GRID -->
+    <div class="footer-container">
+
+      <!-- BRAND -->
+      <div class="footer-col">
+        <h2>ConfidMate</h2>
+        <p>
+          A system designed to help you move from hesitation to confidence —
+          step by step, in real life.
+        </p>
+      </div>
+
+      <!-- QUICK LINKS -->
+      <div class="footer-col">
+        <h4>Explore</h4>
+        <a href="index.html">Home</a>
+        <a href="features/features.html">Features</a>
+        <a href="about/about.html">About</a>
+        <a href="dashboard/dashboard.html">Dashboard</a>
+      </div>
+
+      <!-- ZONES -->
+      <div class="footer-col">
+        <h4>Your Journey</h4>
+        <a href="zones/Comfort/comfort.html">Comfort Zone</a>
+        <a href="zones/Practice/Practice.html">Practice Zone</a>
+        <a href="zones/Growth/Growth.html">Growth Zone</a>
+        <a href="zones/confidence/confidence.html">Confidence Zone</a>
+      </div>
+
+      <!-- CONTACT -->
+      <div class="footer-col">
+        <h4>Connect</h4>
+        <a href="#">Instagram</a>
+        <a href="#">Twitter</a>
+        <a href="#">Email</a>
+      </div>
+
+    </div>
+
+    <!-- BOTTOM -->
+    <div class="footer-bottom">
+      <p>© 2026 ConfidMate. Built for real growth.</p>
+    </div>
+
+  </div>
+
+</footer>
+
+<script src="script.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Confidence Zone - ConfidMate</title>
+  <link rel="stylesheet" href="confidence.css">
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <h2><a href="../../index.html">ConfidMate</a></h2>
+
+    <div class="nav-right">
+      <div class="menu-toggle" id="menu-toggle">☰</div>
+    </div>
+
+    <ul class="nav-links" id="nav-links" >
+      <li><a href="../../index.html">Home</a></li>
+      <li><a href="#features">Features</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#impact">Impact</a></li>
+      <li><a href="#contact">Contact</a></li>
+
+      <li id="auth-area"></li>
+    </ul>
+  </nav>
+
+  <!-- TITLE -->
+  <section class="title">
+    <div>
+      <h3>Welcome to your Confidence Zone.</h3>
+      <p>You don’t wait to feel confident anymore — you act like it.</p>
+    </div>
+  </section>
+
+  <!-- INTRO -->
+  <section class="zones" id="confidence-features">
+    <div class="card glass">
+      <h4>Step Into Your Confidence</h4>
+ <p>
+  This is where ConfidMate helps your confidence turn into identity. Step into stronger conversations,
+  real expression, bold actions, and true social presence. You’re no longer just practicing — you’re becoming.
+</p>
+
+      <h4>Features:</h4>
+      <ul class="features">
+        <li>🗣 Real expression challenges for confident communication</li>
+        <li>🎯 Advanced conversation scenarios and roleplay</li>
+        <li>👁 Presence-building tasks for tone, eye contact, and pacing</li>
+        <li>🔥 Bold real-life missions to push your limits</li>
+        <li>📊 Confidence tracking with actions and progress</li>
+        <li>🏆 Personal win log to reinforce your growth</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- CONFIDENCE CHALLENGE -->
+  <section class="zones" id="challenge-section">
+    <div class="card glass">
+      <h3>🔥 Confidence Challenge</h3>
+      <p id="confidence-challenge-text">Click below to get a bold confidence challenge.</p>
+
+      <div class="confidence-buttons">
+        <button class="premium-btn" onclick="generateConfidenceChallenge()">Get Challenge</button>
+        <button class="premium-btn" onclick="completeConfidenceChallenge()">✅ Done</button>
+        <button class="secondary" onclick="skipConfidenceChallenge()">Skip</button>
+      </div>
+
+      <p id="confidence-challenge-status"></p>
+    </div>
+  </section>
+
+  <!-- PRESENCE TASKS -->
+  <section class="zones">
+    <div class="card glass">
+      <h3>👁 Presence Builder</h3>
+      <p>These small things make you feel more grounded and confident in conversation.</p>
+
+      <div class="presence-buttons">
+        <button class="premium-btn" onclick="markPresenceTask('eye_contact')">Maintain eye contact</button>
+        <button class="premium-btn" onclick="markPresenceTask('slow_speech')">Speak slower</button>
+        <button class="premium-btn" onclick="markPresenceTask('clear_tone')">Use clear tone</button>
+        <button class="premium-btn" onclick="markPresenceTask('pause_reply')">Pause before replying</button>
+      </div>
+
+      <p id="presence-result"></p>
+    </div>
+  </section>
+
+  <!-- AI CONFIDENCE CHAT -->
+  <section class="zones" id="confidence-chat">
+    <div class="card glass">
+      <h3>🤖 Advanced AI Scenario</h3>
+      <p>Practice bold conversations in safe but realistic situations.</p>
+
+      <div class="scenario-buttons">
+        <button class="premium-btn" onclick="setConfidenceMode('networking')">🤝 Networking</button>
+        <button class="premium-btn" onclick="setConfidenceMode('group')">👥 Group Talk</button>
+        <button class="premium-btn" onclick="setConfidenceMode('leadership')">🧠 Leadership</button>
+        <button class="premium-btn" onclick="setConfidenceMode('attraction')">✨ Attraction</button>
+      </div>
+
+      <div class="chat-container">
+        <div class="chat-box" id="chatBox">
+          <div class="ai-message" id="mode-message">Hi — I’m your confidence partner. Pick a mode and start the conversation.</div>
+        </div>
+
+        <input type="text" id="userInput" placeholder="Type your message..." />
+        <button id="sendBtn">Send</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- WIN LOG -->
+  <section class="zones">
+    <div class="card glass">
+      <h3>🏆 Win Log</h3>
+      <p>Write down bold things you did. This builds self-belief.</p>
+
+      <textarea id="win-input" placeholder="Example: I started a conversation confidently today."></textarea>
+      <button class="premium-btn" onclick="saveWinLog()">Save Win</button>
+
+      <div class="wins-list" id="wins-list"></div>
+      <p id="win-result"></p>
+    </div>
+  </section>
+
+  <!-- CONFIDENCE SCORE -->
+  <section class="zones">
+    <div class="card glass">
+      <h3>📈 Confidence Score</h3>
+      <p>Track how often you show up with confidence in real situations.</p>
+
+      <div class="progress-stats">
+        <div class="progress-box">
+          <h4 id="completed-confidence">0</h4>
+          <p>Challenges Done</p>
+        </div>
+
+        <div class="progress-box">
+          <h4 id="presence-count">0</h4>
+          <p>Presence Tasks</p>
+        </div>
+
+        <div class="progress-box">
+          <h4 id="confidence-score">0</h4>
+          <p>Confidence Score</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script src="confidence.js"></script>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Your Identity - ConfidMate</title>
+
+  <!-- FONT -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- USE SAME LOGIN CSS -->
+  <link rel="stylesheet" href="login.css">
+</head>
+
+<body>
+
+  <div class="login-container">
+    <div class="login-box glass">
+
+      <h2>Create your identity</h2>
+      <p>
+        This is how you'll appear inside <strong>ConfidMate</strong> —  
+        keep it simple, clean, and confident.
+      </p>
+
+      <!-- INPUT -->
+      <input 
+        type="text" 
+        id="username" 
+        placeholder="Enter your username"
+        autocomplete="off"
+      >
+
+      <!-- BUTTON -->
+      <button onclick="saveUsername()" class="primary-btn">
+        Continue →
+      </button>
+
+      <!-- MESSAGE -->
+      <p id="usernameMessage"></p>
+
+    </div>
+  </div>
+
+  <script src="choose-username.js"></script>
+</body>
+</html>

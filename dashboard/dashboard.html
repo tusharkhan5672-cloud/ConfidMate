@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard - ConfidMate</title>
+  <link rel="stylesheet" href="dashboard.css" />
+</head>
+<body>
+
+  <!-- NAVBAR -->
+ <nav class="navbar">
+    <h2><a href="../index.html">ConfidMate</a></h2>
+
+    <div class="nav-right">
+      <div class="menu-toggle" id="menu-toggle">☰</div>
+    </div>
+
+    <ul class="nav-links" id="nav-links" >
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="../features/features.html">Features</a></li>
+      <li><a href="../about/about.html">About</a></li>
+      <li><a href="../impact/impact.html">Impact</a></li>
+      <li><a href="../contact/contact.html">Contact</a></li>
+
+      <li id="auth-area"></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero-section" id="overview">
+    <div class="hero-card glass">
+      <div>
+        <h1 id="welcome-text">Hi, User 👋</h1>
+        <p>Your ConfidMate journey is growing day by day. Keep showing up.</p>
+      </div>
+
+      <div class="confidence-score-wrap">
+        <div class="score-ring" id="score-ring">
+          <div class="score-inner">
+            <span id="confidence-score-main">0</span>
+            <small>Confidence</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  
+
+  <!-- TOP STATS -->
+  <section class="stats-grid">
+    <div class="stat-card glass">
+      <div class="stat-top">
+        <span>🔥 Weekly Streak</span>
+        <span class="badge positive" id="streak-badge">0 days</span>
+      </div>
+      <h3 id="weekly-streak-main">0</h3>
+      <p>Days in a row you’ve shown up.</p>
+    </div>
+
+    <div class="stat-card glass">
+      <div class="stat-top">
+        <span>🎯 Total Actions</span>
+        <span class="badge neutral">All zones</span>
+      </div>
+      <h3 id="total-actions-main">0</h3>
+      <p>Total tracked actions completed.</p>
+    </div>
+
+    <div class="stat-card glass">
+      <div class="stat-top">
+        <span>📅 Sessions Today</span>
+        <span class="badge positive">Today</span>
+      </div>
+      <h3 id="today-sessions-main">0</h3>
+      <p>Your activity count for today.</p>
+    </div>
+
+    <div class="stat-card glass">
+      <div class="stat-top">
+        <span>💬 AI Interactions</span>
+        <span class="badge neutral">Support + Practice</span>
+      </div>
+      <h3 id="ai-interactions-main">0</h3>
+      <p>Total chats across your journey.</p>
+    </div>
+  </section>
+
+  <!-- ZONE PROGRESS -->
+  <section class="dashboard-section" id="zones">
+    <div class="section-header">
+      <h2>Zone Progress</h2>
+      <p>See how your confidence is growing across every stage.</p>
+    </div>
+
+    <div class="zone-grid">
+      <div class="zone-card glass">
+        <div class="zone-head">
+          <h3>😌 Comfort Zone</h3>
+          <span id="comfort-percent">0%</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="comfort-fill"></div>
+        </div>
+        <p id="comfort-text">0 comfort actions completed</p>
+      </div>
+
+      <div class="zone-card glass">
+        <div class="zone-head">
+          <h3>🎤 Practice Zone</h3>
+          <span id="practice-percent">0%</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="practice-fill"></div>
+        </div>
+        <p id="practice-text">0 practice actions completed</p>
+      </div>
+
+      <div class="zone-card glass">
+        <div class="zone-head">
+          <h3>🚀 Growth Zone</h3>
+          <span id="growth-percent">0%</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="growth-fill"></div>
+        </div>
+        <p id="growth-text">0 growth actions completed</p>
+      </div>
+
+      <div class="zone-card glass">
+        <div class="zone-head">
+          <h3>👑 Confidence Zone</h3>
+          <span id="confidence-percent">0%</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="confidence-fill"></div>
+        </div>
+        <p id="confidence-text">0 confidence actions completed</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ACTIVITY + INSIGHTS -->
+  <section class="dashboard-two-col" id="activity">
+    <div class="glass activity-card">
+      <div class="section-header small">
+        <h2>Weekly Activity</h2>
+        <p>Your last 7 days of effort.</p>
+      </div>
+
+      <div class="bars-wrap" id="weekly-bars">
+        <div class="bar-col">
+          <div class="bar" id="bar-0"></div>
+          <span id="day-0">Mon</span>
+        </div>
+        <div class="bar-col">
+          <div class="bar" id="bar-1"></div>
+          <span id="day-1">Tue</span>
+        </div>
+        <div class="bar-col">
+          <div class="bar" id="bar-2"></div>
+          <span id="day-2">Wed</span>
+        </div>
+        <div class="bar-col">
+          <div class="bar" id="bar-3"></div>
+          <span id="day-3">Thu</span>
+        </div>
+        <div class="bar-col">
+          <div class="bar" id="bar-4"></div>
+          <span id="day-4">Fri</span>
+        </div>
+        <div class="bar-col">
+          <div class="bar" id="bar-5"></div>
+          <span id="day-5">Sat</span>
+        </div>
+        <div class="bar-col">
+          <div class="bar" id="bar-6"></div>
+          <span id="day-6">Sun</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="insight-stack">
+      <div class="glass insight-card">
+        <h3>🧠 Insights</h3>
+        <p id="most-active-zone">Most active zone: —</p>
+        <p id="mood-trend">Mood trend: —</p>
+        <p id="top-sound">Top calm sound: —</p>
+      </div>
+
+      <div class="glass insight-card">
+        <h3>📊 Growth Stats</h3>
+        <p id="growth-completed">Challenges completed: 0</p>
+        <p id="growth-success">Success rate: 0%</p>
+        <p id="growth-weekly">Weekly activity: 0</p>
+      </div>
+
+      <div class="glass insight-card">
+        <h3>🏆 Confidence Stats</h3>
+        <p id="conf-challenges">Challenges done: 0</p>
+        <p id="presence-count">Presence tasks: 0</p>
+        <p id="win-logs">Wins logged: 0</p>
+      </div>
+    </div>
+  </section>
+
+<!-- WEEKLY GOAL -->
+
+  <section class="dashboard-section" id="weekly-goal-section">
+  <div class="goal-dashboard-shell glass">
+    <div class="goal-dashboard-left">
+      <div class="goal-topbar">
+        <div>
+          <h2>🎯 Weekly Goal</h2>
+          <p>Your personal focus for this week.</p>
+        </div>
+
+        <div class="goal-status-pill" id="goal-status-pill">
+          No Goal
+        </div>
+      </div>
+
+      <div class="goal-main-block">
+        <div class="goal-ring-wrap">
+          <div class="goal-ring" id="goal-ring">
+            <div class="goal-ring-inner">
+              <span id="goal-ring-number">0%</span>
+              <small>Progress</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="goal-main-content">
+          <h3 id="dashboard-goal-title">No weekly goal set yet</h3>
+          <p class="goal-category" id="dashboard-goal-category">Category: —</p>
+          <p class="goal-note" id="dashboard-goal-note">Set a goal to start building momentum.</p>
+
+          <div class="goal-progress-row">
+            <span>Progress</span>
+            <span id="dashboard-goal-progress-text">0 / 0</span>
+          </div>
+
+          <div class="progress-bar dashboard-goal-bar">
+            <div class="progress-fill" id="dashboard-goal-progress-fill"></div>
+          </div>
+
+          <div class="goal-action-row">
+            <button class="goal-btn primary-btn" onclick="addDashboardGoalProgress()">+ Add Progress</button>
+            <button class="goal-btn secondary-btn" onclick="resetDashboardGoal()">Reset</button>
+            <button class="goal-btn primary-btn" onclick="openGoalModal()">Set Goal</button>
+
+          
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="goal-dashboard-right">
+      <div class="goal-support-card glass">
+        <div class="goal-support-head">
+          <h3>🤖 AI Support</h3>
+          <span class="support-chip" id="dashboard-goal-category-chip">Focus</span>
+        </div>
+        <p id="dashboard-goal-ai">Set a weekly goal and ConfidMate will guide you here.</p>
+      </div>
+
+      <div class="goal-mini-stats">
+        <div class="goal-mini-card glass">
+          <span class="mini-label">Target</span>
+          <strong id="goal-target-mini">0</strong>
+        </div>
+        <div class="goal-mini-card glass">
+          <span class="mini-label">Done</span>
+          <strong id="goal-done-mini">0</strong>
+        </div>
+        <div class="goal-mini-card glass">
+          <span class="mini-label">Left</span>
+          <strong id="goal-left-mini">0</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="goal-modal-overlay" id="goal-modal-overlay">
+  <div class="goal-modal glass">
+    <div class="goal-modal-top">
+      <h3>🎯 Set Weekly Goal</h3>
+      <button class="close-goal-btn" onclick="closeGoalModal()">✕</button>
+    </div>
+
+    <div class="goal-form">
+      <input type="text" id="goal-title" placeholder="Enter your weekly goal" />
+
+      <select id="goal-category">
+        <option value="study">Study</option>
+        <option value="work">Work</option>
+        <option value="social">Social</option>
+        <option value="confidence">Confidence</option>
+        <option value="fitness">Fitness</option>
+        <option value="personal">Personal</option>
+      </select>
+
+      <input type="number" id="goal-target" placeholder="Set weekly target (example: 5)" min="1" />
+
+      <textarea id="goal-note" placeholder="Add a short note about this goal..."></textarea>
+
+      <button class="goal-btn primary-btn" onclick="saveDashboardGoal()">Save Goal</button>
+    </div>
+  </div>
+</div>
+
+  <script src="dashboard.js"></script>
+</body>
+</html>
