@@ -70,33 +70,33 @@ const reveals = document.querySelectorAll(".reveal");
 
   // form 
   const contactForm = document.getElementById("contactForm");
-  const formStatus = document.getElementById("formStatus");
+const formStatus = document.getElementById("formStatus");
 
-  if (contactForm) {
-    contactForm.addEventListener("submit", function (e) {
-      e.preventDefault();
+if (contactForm && formStatus) {
+  contactForm.addEventListener("submit", function (e) {
+    e.preventDefault();
 
-      const name = document.getElementById("name").value.trim();
-      const email = document.getElementById("email").value.trim();
-      const subject = document.getElementById("subject").value.trim();
-      const message = document.getElementById("message").value.trim();
+    const name = document.getElementById("name").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const subject = document.getElementById("subject").value.trim();
+    const message = document.getElementById("message").value.trim();
 
-      if (!name || !email || !subject || !message) {
-        formStatus.textContent = "Please fill in all fields first.";
-        formStatus.style.color = "#b91c1c";
-        return;
-      }
+    if (!name || !email || !subject || !message) {
+      formStatus.textContent = "Please fill in all fields first.";
+      formStatus.style.color = "#b91c1c";
+      return;
+    }
 
-      formStatus.textContent = "Sending your message...";
-      formStatus.style.color = "#475569";
+    formStatus.textContent = "Sending your message...";
+    formStatus.style.color = "#475569";
 
-      setTimeout(() => {
-        formStatus.textContent = "Message sent successfully ✅";
-        formStatus.style.color = "#166534";
-        contactForm.reset();
-      }, 1200);
-    });
-  }
+    setTimeout(() => {
+      formStatus.textContent = "Message sent successfully ✅";
+      formStatus.style.color = "#166534";
+      contactForm.reset();
+    }, 1200);
+  });
+}
 
   //logout
 
