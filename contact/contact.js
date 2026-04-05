@@ -72,29 +72,33 @@ const reveals = document.querySelectorAll(".reveal");
   const contactForm = document.getElementById("contactForm");
 const formStatus = document.getElementById("formStatus");
 
+// INIT EMAILJS
+emailjs.init({
+  publicKey: "PASTE_YOUR_PUBLIC_KEY_HERE"
+});
+
 if (contactForm && formStatus) {
   contactForm.addEventListener("submit", function (e) {
     e.preventDefault();
 
-    const name = document.getElementById("name").value.trim();
-    const email = document.getElementById("email").value.trim();
-    const subject = document.getElementById("subject").value.trim();
-    const message = document.getElementById("message").value.trim();
-
-    if (!name || !email || !subject || !message) {
-      formStatus.textContent = "Please fill in all fields first.";
-      formStatus.style.color = "#b91c1c";
-      return;
-    }
-
     formStatus.textContent = "Sending your message...";
     formStatus.style.color = "#475569";
 
-    setTimeout(() => {
+    emailjs.sendForm(
+      "service_confidmate",     // ✅ your service ID
+      "template_5hq8x6o",       // ✅ your template ID
+      "#contactForm"
+    )
+    .then(() => {
       formStatus.textContent = "Message sent successfully ✅";
       formStatus.style.color = "#166534";
       contactForm.reset();
-    }, 1200);
+    })
+    .catch((error) => {
+      console.error("EmailJS error:", error);
+      formStatus.textContent = "Failed to send message. Try again.";
+      formStatus.style.color = "#b91c1c";
+    });
   });
 }
 
