@@ -192,89 +192,98 @@ body {
   font-weight: 500;
 }
 
-/* FORM */
 /* FORM SECTION */
 .contact-form-section {
-  max-width: 1200px;   /* 🔥 match your other sections */
+  max-width: 1200px;
   margin: 60px auto 0;
   padding: 0 20px;
 }
 
-/* CARD */
 .contact-form-card {
-  padding: 35px;
+  padding: 38px;
 }
 
 /* HEAD */
 .form-head {
-  text-align: left;   /* 🔥 not centered */
+  text-align: left;
   margin-bottom: 28px;
 }
 
 .form-head h2 {
   margin: 0 0 10px;
-  font-size: 2rem;
+  font-size: 2.1rem;
+  color: #1e293b;
 }
 
 .form-head p {
   max-width: 650px;
   color: #64748b;
   line-height: 1.7;
+  margin: 0;
 }
 
 /* FORM */
 .contact-form {
+  max-width: 880px;
   display: flex;
   flex-direction: column;
   gap: 18px;
-  max-width: 850px;   /* 🔥 not too tight, not too wide */
 }
 
-/* ROW */
 .form-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 18px;
 }
 
-/* INPUT STYLE */
+.input-wrap {
+  position: relative;
+}
+
+/* INPUTS */
 .contact-form input,
 .contact-form textarea {
   width: 100%;
   padding: 16px 18px;
-  border-radius: 16px;
-  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
   outline: none;
   font-family: inherit;
   font-size: 14px;
-  background: rgba(255,255,255,0.4);
+  background: rgba(255, 255, 255, 0.42);
   backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
   color: #1e293b;
-  transition: 0.25s ease;
+  transition: all 0.25s ease;
+  box-sizing: border-box;
 }
 
-/* HOVER + FOCUS */
+.contact-form input::placeholder,
+.contact-form textarea::placeholder {
+  color: #64748b;
+}
+
 .contact-form input:hover,
 .contact-form textarea:hover {
-  background: rgba(255,255,255,0.55);
+  background: rgba(255, 255, 255, 0.56);
 }
 
 .contact-form input:focus,
 .contact-form textarea:focus {
-  border-color: rgba(99,102,241,0.4);
-  background: rgba(255,255,255,0.65);
+  border-color: rgba(99, 102, 241, 0.45);
+  background: rgba(255, 255, 255, 0.68);
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.08);
 }
 
-/* TEXTAREA */
 .contact-form textarea {
-  min-height: 150px;
+  min-height: 160px;
   resize: vertical;
 }
 
 /* BUTTON */
-/* FORM BUTTON ONLY */
 .form-btn {
   position: relative;
+  align-self: flex-start;
   padding: 14px 28px;
   border-radius: 16px;
   font-weight: 600;
@@ -282,27 +291,22 @@ body {
   border: none;
   cursor: pointer;
   color: white;
-
   background: linear-gradient(135deg, #6366f1, #818cf8);
-  box-shadow: 0 6px 18px rgba(99,102,241,0.25);
-
+  box-shadow: 0 6px 18px rgba(99, 102, 241, 0.25);
   transition: all 0.3s ease;
   overflow: hidden;
 }
 
-/* HOVER */
 .form-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 12px 28px rgba(99,102,241,0.35);
+  box-shadow: 0 12px 28px rgba(99, 102, 241, 0.35);
   background: linear-gradient(135deg, #4f46e5, #6366f1);
 }
 
-/* CLICK */
 .form-btn:active {
-  transform: scale(0.96);
+  transform: scale(0.97);
 }
 
-/* LIGHT SWEEP EFFECT */
 .form-btn::before {
   content: "";
   position: absolute;
@@ -325,35 +329,68 @@ body {
 
 /* STATUS */
 .form-status {
-  margin-top: 12px;
+  margin-top: 14px;
   font-weight: 600;
   color: #334155;
+  min-height: 24px;
 }
 
-@media (max-width: 768px) {
-  .form-head {
-    text-align: center;
-  }
-
+/* TABLET */
+@media (max-width: 992px) {
   .contact-form {
     max-width: 100%;
   }
 
-.form-row.name {
-    align-items: center;
-}
-
   .form-row {
     grid-template-columns: 1fr;
   }
+}
 
-  .contact-form button {
-    width: 50%;   /* 🔥 full width button */
-    text-align: center;
+/* MOBILE */
+@media (max-width: 768px) {
+  .contact-form-section {
+    padding: 0 10px;
   }
 
   .contact-form-card {
     padding: 24px 18px;
+  }
+
+  .form-head {
+    text-align: center;
+    margin-bottom: 22px;
+  }
+
+  .form-head h2 {
+    font-size: 1.7rem;
+  }
+
+  .form-head p {
+    max-width: 100%;
+    font-size: 0.95rem;
+  }
+
+  .contact-form {
+    gap: 16px;
+  }
+
+  .contact-form input,
+  .contact-form textarea {
+    padding: 15px 16px;
+    font-size: 14px;
+    border-radius: 16px;
+  }
+
+  .form-btn {
+    width: 100%;
+    align-self: stretch;
+    text-align: center;
+    padding: 15px 18px;
+  }
+
+  .form-status {
+    text-align: center;
+    font-size: 0.95rem;
   }
 }
 
