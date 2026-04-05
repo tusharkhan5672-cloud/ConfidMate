@@ -74,7 +74,7 @@ const formStatus = document.getElementById("formStatus");
 
 // INIT EMAILJS
 emailjs.init({
-  publicKey: "PASTE_YOUR_PUBLIC_KEY_HERE"
+  publicKey: "hayvBpmXbBI0Sf3a-"
 });
 
 if (contactForm && formStatus) {
