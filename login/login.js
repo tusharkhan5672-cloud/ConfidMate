@@ -39,15 +39,28 @@ function getUsernameFromEmail(email) {
   return email.split("@")[0];
 }
 
+function getUsersFromStorage() {
+  return JSON.parse(localStorage.getItem("users")) || {};
+}
+
+function saveUsersToStorage(users) {
+  localStorage.setItem("users", JSON.stringify(users));
+}
+
 function ensureUserInLocalStorage(userEmail) {
-  const users = JSON.parse(localStorage.getItem("users")) || {};
+  const users = getUsersFromStorage();
 
   if (!users[userEmail]) {
     users[userEmail] = {
       password: null,
+      username: null,
       data: {
         moods: [],
-        breathing: { totalCycles: 0, lastSessionStart: null, lastSessionEnd: null },
+        breathing: {
+          totalCycles: 0,
+          lastSessionStart: null,
+          lastSessionEnd: null
+        },
         tipsSeen: [],
         soundsPlayed: [],
         chatHistory: [],
@@ -88,120 +101,173 @@ function ensureUserInLocalStorage(userEmail) {
       }
     };
 
-    localStorage.setItem("users", JSON.stringify(users));
+    saveUsersToStorage(users);
   }
 }
 
-loginBtn.addEventListener("click", async () => {
-  const email = emailInput.value.trim();
-  const password = passwordInput.value.trim();
+function redirectToHome() {
+  setTimeout(() => {
+    window.location.href = "../index.html";
+  }, 700);
+}
 
-  if (!email || !password) {
-    showMessage("Please enter email and password.", true);
+function redirectToChooseUsername() {
+  setTimeout(() => {
+    window.location.href = "choose-username.html";
+  }, 700);
+}
+
+function handleExistingUserLogin(userEmail) {
+  const users = getUsersFromStorage();
+
+  ensureUserInLocalStorage(userEmail);
+
+  if (users[userEmail] && users[userEmail].username) {
+    localStorage.setItem("currentUser", users[userEmail].username);
+    localStorage.setItem("userEmail", userEmail);
+
+    showMessage("Welcome back 👋");
+    redirectToHome();
     return;
   }
 
-  try {
-    const userCredential = await signInWithEmailAndPassword(auth, email, password);
-    const userEmail = userCredential.user.email;
-    const username = getUsernameFromEmail(userEmail);
+  localStorage.setItem("userEmail", userEmail);
+  showMessage("Almost done — choose your username first.");
+  redirectToChooseUsername();
+}
 
-    ensureUserInLocalStorage(userEmail);
+/* =========================
+   LOGIN WITH EMAIL / PASSWORD
+========================= */
 
-    localStorage.setItem("currentUser", username);
-    localStorage.setItem("userEmail", userEmail);
+if (loginBtn) {
+  loginBtn.addEventListener("click", async () => {
+    const email = emailInput.value.trim();
+    const password = passwordInput.value.trim();
 
-    showMessage("Login successful ✅");
-
-    setTimeout(() => {
-      window.location.href = "../index.html";
-    }, 700);
-  } catch (error) {
-    showMessage(error.message, true);
-  }
-});
-
-signupBtn.addEventListener("click", async () => {
-  const email = emailInput.value.trim();
-  const password = passwordInput.value.trim();
-
-  if (!email || !password) {
-    showMessage("Please enter email and password.", true);
-    return;
-  }
-
-  try {
-    // TRY TO CREATE ACCOUNT
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-
-    const userEmail = userCredential.user.email;
-    const username = userEmail.split("@")[0];
-
-    ensureUserInLocalStorage(userEmail);
-
-    localStorage.setItem("currentUser", username);
-    localStorage.setItem("userEmail", userEmail);
-
-    showMessage("Account created successfully 🎉");
-
-    setTimeout(() => {
-      window.location.href = "../index.html";
-    }, 700);
-
-  } catch (error) {
-
-    // 🔥 IF EMAIL ALREADY EXISTS → LOGIN INSTEAD
-    if (error.code === "auth/email-already-in-use") {
-      try {
-        const userCredential = await signInWithEmailAndPassword(auth, email, password);
-
-        const userEmail = userCredential.user.email;
-        const username = userEmail.split("@")[0];
-
-        ensureUserInLocalStorage(userEmail);
-
-        localStorage.setItem("currentUser", username);
-        localStorage.setItem("userEmail", userEmail);
-
-        showMessage("Welcome back 👋");
-
-        setTimeout(() => {
-          window.location.href = "../index.html";
-        }, 700);
-
-      } catch (loginError) {
-        showMessage("Account exists. Please check your password.", true);
-      }
-    } else {
-      showMessage(error.message, true);
-    }
-  }
-});
-
-googleBtn.addEventListener("click", async () => {
-  try {
-    const result = await signInWithPopup(auth, provider);
-    const user = result.user;
-    const userEmail = user.email;
-
-    const users = JSON.parse(localStorage.getItem("users")) || {};
-
-    // If user exists AND has username → go home
-    if (users[userEmail] && users[userEmail].username) {
-      localStorage.setItem("currentUser", users[userEmail].username);
-      localStorage.setItem("userEmail", userEmail);
-
-      window.location.href = "../index.html";
+    if (!email || !password) {
+      showMessage("Please enter email and password.", true);
       return;
     }
 
-    // If new user → store email temporarily
-    localStorage.setItem("userEmail", userEmail);
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const userEmail = userCredential.user.email;
 
-    window.location.href = "choose-username.html";
+      handleExistingUserLogin(userEmail);
 
-  } catch (error) {
-    showMessage(error.message, true);
-  }
-});
+    } catch (error) {
+      console.error("LOGIN ERROR:", error.code, error.message);
 
+      if (
+        error.code === "auth/invalid-credential" ||
+        error.code === "auth/user-not-found" ||
+        error.code === "auth/wrong-password"
+      ) {
+        showMessage("No account found with these details. Create an account first or check your password.", true);
+      } else if (error.code === "auth/invalid-email") {
+        showMessage("Please enter a valid email address.", true);
+      } else if (error.code === "auth/user-disabled") {
+        showMessage("This account has been disabled.", true);
+      } else {
+        showMessage(error.message, true);
+      }
+    }
+  });
+}
+
+/* =========================
+   SIGNUP WITH EMAIL / PASSWORD
+========================= */
+
+if (signupBtn) {
+  signupBtn.addEventListener("click", async () => {
+    const email = emailInput.value.trim();
+    const password = passwordInput.value.trim();
+
+    if (!email || !password) {
+      showMessage("Please enter email and password.", true);
+      return;
+    }
+
+    if (password.length < 6) {
+      showMessage("Password should be at least 6 characters long.", true);
+      return;
+    }
+
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const userEmail = userCredential.user.email;
+
+      ensureUserInLocalStorage(userEmail);
+
+      // store email only for username selection step
+      localStorage.setItem("userEmail", userEmail);
+
+      showMessage("Account created 🎉 Now choose your username.");
+      redirectToChooseUsername();
+
+    } catch (error) {
+      console.error("SIGNUP ERROR:", error.code, error.message);
+
+      if (error.code === "auth/email-already-in-use") {
+        showMessage("This email is already registered. Try logging in instead.", true);
+      } else if (error.code === "auth/weak-password") {
+        showMessage("Password should be at least 6 characters long.", true);
+      } else if (error.code === "auth/invalid-email") {
+        showMessage("Please enter a valid email address.", true);
+      } else {
+        showMessage(error.message, true);
+      }
+    }
+  });
+}
+
+/* =========================
+   GOOGLE LOGIN / SIGNUP
+========================= */
+
+if (googleBtn) {
+  googleBtn.addEventListener("click", async () => {
+    try {
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+      const userEmail = user.email;
+
+      const users = getUsersFromStorage();
+
+      ensureUserInLocalStorage(userEmail);
+
+      // Existing user with username → go home
+      if (users[userEmail] && users[userEmail].username) {
+        localStorage.setItem("currentUser", users[userEmail].username);
+        localStorage.setItem("userEmail", userEmail);
+
+        showMessage("Login successful ✅");
+        redirectToHome();
+        return;
+      }
+
+      // New or incomplete user → choose username
+      localStorage.setItem("userEmail", userEmail);
+      showMessage("Almost done — choose your username.");
+      redirectToChooseUsername();
+
+    } catch (error) {
+      console.error("GOOGLE LOGIN ERROR:", error.code, error.message);
+      showMessage(error.message, true);
+    }
+  });
+}
+
+/* =========================
+   ENTER KEY SUPPORT
+========================= */
+
+if (passwordInput) {
+  passwordInput.addEventListener("keypress", function (e) {
+    if (e.key === "Enter" && loginBtn) {
+      loginBtn.click();
+    }
+  });
+}
