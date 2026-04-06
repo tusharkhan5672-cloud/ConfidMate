@@ -58,6 +58,581 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 /* =========================
+   LIVE STAGE STARTS
+========================= */
+
+let mediaRecorder = null;
+let audioChunks = [];
+let recordedAudioBlob = null;
+let recordedAudioUrl = null;
+let recordingStartTime = null;
+let activeStream = null;
+let lastStageReport = null;
+let recognition = null;
+let finalTranscript = "";
+let interimTranscript = "";
+let speechRecognitionStartTime = null;
+
+const fillerWordsList = ["umm", "uh", "like", "basically", "actually", "you know", "sort of", "kind of", "literally"];
+
+document.addEventListener("DOMContentLoaded", function () {
+  const startPracticeBtn = document.getElementById("startPracticeBtn");
+  const stopPracticeBtn = document.getElementById("stopPracticeBtn");
+
+  if (startPracticeBtn) {
+    startPracticeBtn.addEventListener("click", startFullPractice);
+  }
+
+  if (stopPracticeBtn) {
+    stopPracticeBtn.addEventListener("click", stopFullPractice);
+  }
+});
+
+function startFullPractice() {
+  const startPracticeBtn = document.getElementById("startPracticeBtn");
+  const stopPracticeBtn = document.getElementById("stopPracticeBtn");
+  const recordStatus = document.getElementById("recordStatus");
+  const recordHint = document.getElementById("recordHint");
+
+  if (startPracticeBtn) startPracticeBtn.disabled = true;
+  if (stopPracticeBtn) stopPracticeBtn.disabled = false;
+
+  if (recordStatus) recordStatus.textContent = "Listening and recording...";
+  if (recordHint) recordHint.textContent = "Speak naturally. We’re capturing your voice, transcript, and breakdown together.";
+
+  startSpeechRecording();
+  startSpeechListening();
+}
+
+function stopFullPractice() {
+  const startPracticeBtn = document.getElementById("startPracticeBtn");
+  const stopPracticeBtn = document.getElementById("stopPracticeBtn");
+  const recordStatus = document.getElementById("recordStatus");
+  const recordHint = document.getElementById("recordHint");
+
+  if (startPracticeBtn) startPracticeBtn.disabled = false;
+  if (stopPracticeBtn) stopPracticeBtn.disabled = true;
+
+  stopSpeechRecording();
+  stopSpeechListening();
+
+  if (recordStatus) recordStatus.textContent = "Practice complete";
+  if (recordHint) recordHint.textContent = "Your recording, transcript, and breakdown are ready below.";
+}
+
+async function startSpeechRecording() {
+  const recordBtn = document.getElementById("recordBtn");
+  const stopRecordBtn = document.getElementById("stopRecordBtn");
+  const recordStatus = document.getElementById("recordStatus");
+  const recordHint = document.getElementById("recordHint");
+  const audioPlayer = document.getElementById("audioPlayer");
+  const audioStatus = document.getElementById("audioStatus");
+
+  try {
+    activeStream = await navigator.mediaDevices.getUserMedia({
+      audio: {
+        echoCancellation: true,
+        noiseSuppression: true,
+        autoGainControl: true
+      }
+    });
+
+    audioChunks = [];
+    recordedAudioBlob = null;
+
+    if (recordedAudioUrl) {
+      URL.revokeObjectURL(recordedAudioUrl);
+      recordedAudioUrl = null;
+    }
+
+    if (audioPlayer) {
+      audioPlayer.pause();
+      audioPlayer.removeAttribute("src");
+      audioPlayer.load();
+    }
+
+    if (audioStatus) {
+      audioStatus.textContent = "Recording in progress...";
+    }
+
+    let mimeType = "";
+    if (MediaRecorder.isTypeSupported("audio/webm;codecs=opus")) {
+      mimeType = "audio/webm;codecs=opus";
+    } else if (MediaRecorder.isTypeSupported("audio/webm")) {
+      mimeType = "audio/webm";
+    } else if (MediaRecorder.isTypeSupported("audio/mp4")) {
+      mimeType = "audio/mp4";
+    }
+
+    mediaRecorder = mimeType
+      ? new MediaRecorder(activeStream, { mimeType })
+      : new MediaRecorder(activeStream);
+
+    recordingStartTime = Date.now();
+
+    mediaRecorder.ondataavailable = function (event) {
+      if (event.data && event.data.size > 0) {
+        audioChunks.push(event.data);
+      }
+    };
+
+    mediaRecorder.onstop = function () {
+      if (!audioChunks.length) {
+        if (recordStatus) recordStatus.textContent = "No audio captured";
+        if (recordHint) recordHint.textContent = "Try again and allow microphone access.";
+        if (audioStatus) audioStatus.textContent = "No recording available.";
+        return;
+      }
+
+      recordedAudioBlob = new Blob(audioChunks, {
+        type: mediaRecorder.mimeType || "audio/webm"
+      });
+
+      recordedAudioUrl = URL.createObjectURL(recordedAudioBlob);
+
+      if (audioPlayer) {
+        audioPlayer.src = recordedAudioUrl;
+        audioPlayer.load();
+      }
+
+      if (audioStatus) {
+        audioStatus.textContent = "Recording ready. You can play, pause, or move through the timeline.";
+      }
+
+      if (recordStatus) recordStatus.textContent = "Recording complete";
+      if (recordHint) recordHint.textContent = "Audio recorded. Use live listening for transcript and speech breakdown.";
+
+      if (activeStream) {
+        activeStream.getTracks().forEach(track => track.stop());
+        activeStream = null;
+      }
+    };
+
+    mediaRecorder.start();
+
+
+
+    if (recordStatus) recordStatus.textContent = "Recording...";
+    if (recordHint) recordHint.textContent = "Speak naturally. Click stop when you're done.";
+
+    trackPracticeSession();
+  } catch (error) {
+    console.error("Recording start error:", error);
+    if (recordStatus) recordStatus.textContent = "Microphone unavailable";
+    if (recordHint) recordHint.textContent = "Please allow microphone access and try again.";
+    if (audioStatus) audioStatus.textContent = "Microphone access is required.";
+  }
+}
+
+function analyzeLiveTranscript() {
+  const transcriptEl = document.getElementById("speechTranscript");
+  const judgeFeedback = document.getElementById("judgeFeedback");
+
+  const transcript = (finalTranscript || "").trim();
+  const durationSeconds = Math.max(
+    1,
+    Math.round((Date.now() - speechRecognitionStartTime) / 1000)
+  );
+
+  if (!transcript) {
+    setJudgeMetric("metric-duration", "--");
+    setJudgeMetric("metric-words", "--");
+    setJudgeMetric("metric-pace", "--");
+    setJudgeMetric("metric-fillers", "--");
+    setJudgeMetric("score-clarity", "--");
+    setJudgeMetric("score-confidence", "--");
+    setJudgeMetric("score-pace", "--");
+    setJudgeMetric("score-structure", "--");
+
+    if (judgeFeedback) {
+      judgeFeedback.textContent = "No speech captured. Try again and speak clearly.";
+    }
+    return;
+  }
+
+  if (transcriptEl) {
+    transcriptEl.textContent = transcript;
+  }
+
+  const words = transcript.split(/\s+/).filter(Boolean);
+  const wordCount = words.length;
+  const wpm = Math.round((wordCount / durationSeconds) * 60);
+
+  let fillerCount = 0;
+  const lower = transcript.toLowerCase();
+
+  fillerWordsList.forEach(word => {
+    const regex = new RegExp(`\\b${word.replace(/\s+/g, "\\s+")}\\b`, "gi");
+    const matches = lower.match(regex);
+    if (matches) fillerCount += matches.length;
+  });
+
+  let clarity = 6;
+  let confidence = 6;
+  let paceScore = 6;
+  let structure = 6;
+
+  if (wordCount >= 20) clarity += 1;
+  if (wordCount >= 35) structure += 1;
+  if (wordCount < 10) structure -= 2;
+
+  if (wpm > 150) paceScore -= 1;
+  if (wpm >= 90 && wpm <= 140) paceScore += 2;
+  if (wpm < 70) paceScore -= 1;
+
+  if (
+    lower.includes("i am") ||
+    lower.includes("my name is") ||
+    lower.includes("i can") ||
+    lower.includes("i will")
+  ) {
+    confidence += 1;
+  }
+
+  if (
+    lower.includes("maybe") ||
+    lower.includes("i think") ||
+    lower.includes("not sure")
+  ) {
+    confidence -= 1;
+  }
+
+  clarity -= Math.min(fillerCount, 2);
+  confidence -= Math.min(fillerCount, 2);
+
+  clarity = clampScore(clarity);
+  confidence = clampScore(confidence);
+  paceScore = clampScore(paceScore);
+  structure = clampScore(structure);
+
+  setJudgeMetric("metric-duration", `${durationSeconds}s`);
+  setJudgeMetric("metric-words", wordCount);
+  setJudgeMetric("metric-pace", `${wpm} wpm`);
+  setJudgeMetric("metric-fillers", fillerCount);
+
+  setJudgeMetric("score-clarity", `${clarity}/10`);
+  setJudgeMetric("score-confidence", `${confidence}/10`);
+  setJudgeMetric("score-pace", `${paceScore}/10`);
+  setJudgeMetric("score-structure", `${structure}/10`);
+
+  let feedback = "";
+
+  if (wordCount < 12) {
+    feedback += "Your response felt short, so the idea did not fully develop. ";
+  } else {
+    feedback += "You gave enough content to analyze properly. ";
+  }
+
+  if (fillerCount > 0) {
+    feedback += `You used filler words ${fillerCount} time${fillerCount > 1 ? "s" : ""}. Try pausing instead of filling silence. `;
+  }
+
+  if (wpm > 150) {
+    feedback += "Your pace felt fast. Slow down slightly so your message sounds stronger. ";
+  } else if (wpm < 70) {
+    feedback += "Your pace felt slow. Try a steadier flow so your speech sounds more natural. ";
+  } else {
+    feedback += "Your pace was in a good working range. ";
+  }
+
+  if (confidence >= 7) {
+    feedback += "Your wording felt fairly direct, which helps you sound confident. ";
+  } else {
+    feedback += "Try using shorter and more direct lines to sound more confident. ";
+  }
+
+  if (structure >= 7) {
+    feedback += "Your response had a decent structure, which improves delivery. ";
+  } else {
+    feedback += "Try organizing your speech as opening, main point, and closing. ";
+  }
+
+  feedback += "For the next round, improve just one thing at a time.";
+
+  if (judgeFeedback) {
+    judgeFeedback.textContent = feedback;
+  }
+
+  const data = getUserData();
+  if (!data.practice.judgeReports) {
+    data.practice.judgeReports = [];
+  }
+
+  const report = {
+    durationSeconds,
+    wordCount,
+    wpm,
+    fillerCount,
+    clarity,
+    confidence,
+    pace: paceScore,
+    structure,
+    transcript,
+    feedback,
+    time: new Date().toISOString()
+  };
+
+  data.practice.judgeReports.push(report);
+  saveUserData(data);
+
+  lastStageReport = report;
+}
+
+function startSpeechListening() {
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+  const startListeningBtn = document.getElementById("startListeningBtn");
+  const stopListeningBtn = document.getElementById("stopListeningBtn");
+  const recordStatus = document.getElementById("recordStatus");
+  const recordHint = document.getElementById("recordHint");
+  const transcriptEl = document.getElementById("speechTranscript");
+  const judgeFeedback = document.getElementById("judgeFeedback");
+
+  if (!SpeechRecognition) {
+    if (recordStatus) recordStatus.textContent = "Speech recognition not supported";
+    if (recordHint) recordHint.textContent = "Use Chrome or a supported browser for live transcript.";
+    return;
+  }
+
+  finalTranscript = "";
+  interimTranscript = "";
+  speechRecognitionStartTime = Date.now();
+
+  recognition = new SpeechRecognition();
+  recognition.lang = "en-US";
+  recognition.continuous = true;
+  recognition.interimResults = true;
+
+  recognition.onstart = function () {
+
+    if (recordStatus) recordStatus.textContent = "Listening live...";
+    if (recordHint) recordHint.textContent = "Speak naturally. Your transcript is updating in real time.";
+    if (transcriptEl) transcriptEl.textContent = "Listening...";
+    if (judgeFeedback) judgeFeedback.textContent = "Speech breakdown will appear after you stop listening.";
+  };
+
+  recognition.onresult = function (event) {
+    interimTranscript = "";
+    let latestFinal = "";
+
+    for (let i = event.resultIndex; i < event.results.length; i++) {
+      const transcriptPiece = event.results[i][0].transcript;
+      if (event.results[i].isFinal) {
+        latestFinal += transcriptPiece + " ";
+      } else {
+        interimTranscript += transcriptPiece;
+      }
+    }
+
+    finalTranscript += latestFinal;
+
+    if (transcriptEl) {
+      const combined = (finalTranscript + interimTranscript).trim();
+      transcriptEl.textContent = combined || "Listening...";
+    }
+  };
+
+  recognition.onerror = function (event) {
+    console.error("Speech recognition error:", event.error);
+    if (recordStatus) recordStatus.textContent = "Recognition error";
+    if (recordHint) recordHint.textContent = `Error: ${event.error}`;
+    if (startListeningBtn) startListeningBtn.disabled = false;
+    if (stopListeningBtn) stopListeningBtn.disabled = true;
+  };
+
+  recognition.onend = function () {
+
+    if (recordStatus) recordStatus.textContent = "Listening stopped";
+    if (recordHint) recordHint.textContent = "Transcript captured. Review your speech breakdown below.";
+
+    analyzeLiveTranscript();
+  };
+
+  recognition.start();
+  trackPracticeSession();
+}
+
+function stopSpeechListening() {
+  if (recognition) {
+    recognition.stop();
+  }
+}
+
+
+function stopSpeechRecording() {
+  const recordBtn = document.getElementById("recordBtn");
+  const stopRecordBtn = document.getElementById("stopRecordBtn");
+
+  if (mediaRecorder && mediaRecorder.state !== "inactive") {
+    mediaRecorder.stop();
+  }
+
+
+}
+
+function generateStageJudgeFromTranscript(durationSeconds) {
+  const transcriptEl = document.getElementById("speechTranscript");
+  const judgeFeedback = document.getElementById("judgeFeedback");
+  const typedInput = document.getElementById("speechInput");
+
+  let transcript = "";
+
+  if (typedInput && typedInput.value.trim()) {
+    transcript = typedInput.value.trim();
+  }
+
+  if (!transcript) {
+    transcript = "No transcript captured automatically yet. Type what you said in the speech box for full judging.";
+  }
+
+  if (transcriptEl) {
+    transcriptEl.textContent = transcript;
+  }
+
+  const noTranscriptFallback = transcript === "No transcript captured automatically yet. Type what you said in the speech box for full judging.";
+  const words = noTranscriptFallback ? [] : transcript.split(/\s+/);
+  const wordCount = words.length;
+  const wpm = durationSeconds > 0 && wordCount > 0 ? Math.round((wordCount / durationSeconds) * 60) : 0;
+
+  let fillerCount = 0;
+  const lower = transcript.toLowerCase();
+
+  fillerWordsList.forEach(word => {
+    const regex = new RegExp(`\\b${word.replace(/\s+/g, "\\s+")}\\b`, "g");
+    const matches = lower.match(regex);
+    if (matches) fillerCount += matches.length;
+  });
+
+  let clarity = 6;
+  let confidence = 6;
+  let paceScore = 6;
+  let structure = 6;
+
+  if (wordCount >= 20) clarity += 1;
+  if (wordCount >= 35) structure += 1;
+  if (wordCount < 10 && wordCount > 0) structure -= 2;
+
+  if (wpm > 150) paceScore -= 1;
+  if (wpm >= 90 && wpm <= 140) paceScore += 2;
+  if (wpm < 70 && wordCount > 0) paceScore -= 1;
+
+  if (
+    lower.includes("i am") ||
+    lower.includes("my name is") ||
+    lower.includes("i can") ||
+    lower.includes("i will")
+  ) {
+    confidence += 1;
+  }
+
+  if (
+    lower.includes("maybe") ||
+    lower.includes("i think") ||
+    lower.includes("not sure")
+  ) {
+    confidence -= 1;
+  }
+
+  clarity -= Math.min(fillerCount, 2);
+  confidence -= Math.min(fillerCount, 2);
+
+  clarity = clampScore(clarity);
+  confidence = clampScore(confidence);
+  paceScore = clampScore(paceScore);
+  structure = clampScore(structure);
+
+  setJudgeMetric("metric-duration", `${durationSeconds}s`);
+  setJudgeMetric("metric-words", wordCount || "--");
+  setJudgeMetric("metric-pace", wordCount ? `${wpm} wpm` : "--");
+  setJudgeMetric("metric-fillers", wordCount ? fillerCount : "--");
+
+  setJudgeMetric("score-clarity", `${clarity}/10`);
+  setJudgeMetric("score-confidence", `${confidence}/10`);
+  setJudgeMetric("score-pace", `${paceScore}/10`);
+  setJudgeMetric("score-structure", `${structure}/10`);
+
+  let feedback = "";
+
+  if (noTranscriptFallback) {
+    feedback = "Recording worked. For full speech judging, type what you said in the speech box so I can analyze clarity, pace, fillers, and structure properly.";
+  } else {
+    if (wordCount < 12) {
+      feedback += "Your response felt a little short, so the idea did not fully develop. ";
+    } else {
+      feedback += "You gave enough content to work with, which is a strong start. ";
+    }
+
+    if (fillerCount > 0) {
+      feedback += `You used filler words ${fillerCount} time${fillerCount > 1 ? "s" : ""}. Try pausing instead of filling silence. `;
+    }
+
+    if (wpm > 150) {
+      feedback += "Your pace felt a bit fast. Slow down slightly so your thoughts land better. ";
+    } else if (wpm < 70) {
+      feedback += "Your pace felt a little slow. Try a steadier rhythm to sound more natural. ";
+    } else {
+      feedback += "Your pace was in a pretty workable range. ";
+    }
+
+    if (confidence >= 7) {
+      feedback += "Your wording felt fairly direct, which helps you sound more confident. ";
+    } else {
+      feedback += "Try using shorter and more direct sentences to sound more confident. ";
+    }
+
+    if (structure >= 7) {
+      feedback += "Your response had a clearer structure, which improves delivery. ";
+    } else {
+      feedback += "Try organizing your answer as opening, point, and closing. ";
+    }
+
+    feedback += "For the next round, focus on just one improvement instead of trying to fix everything at once.";
+  }
+
+  if (judgeFeedback) {
+    judgeFeedback.textContent = feedback;
+  }
+
+  const data = getUserData();
+  if (!data.practice.judgeReports) {
+    data.practice.judgeReports = [];
+  }
+
+  const report = {
+    durationSeconds,
+    wordCount,
+    wpm,
+    fillerCount,
+    clarity,
+    confidence,
+    pace: paceScore,
+    structure,
+    transcript,
+    feedback,
+    time: new Date().toISOString()
+  };
+
+  data.practice.judgeReports.push(report);
+  saveUserData(data);
+
+  lastStageReport = report;
+}
+
+function setJudgeMetric(id, value) {
+  const el = document.getElementById(id);
+  if (el) el.textContent = value;
+}
+
+function clampScore(value) {
+  return Math.max(3, Math.min(10, value));
+}
+
+/* =========================
+   LIVE STAGE ENDS
+========================= */
+
+
+/* =========================
    USER DATA HELPERS
 ========================= */
 
