@@ -903,6 +903,127 @@ function clampScore(value) {
    LIVE STAGE ENDS
 ========================= */
 
+/* =========================
+   AI ASSISTANT - FRONTEND
+========================= */
+
+
+
+const chatBox = document.getElementById("chatBox");
+const userInput = document.getElementById("userInput");
+const sendBtn = document.getElementById("sendBtn");
+
+if (sendBtn && userInput && chatBox) {
+  sendBtn.addEventListener("click", sendAIMessage);
+
+  userInput.addEventListener("keypress", function (e) {
+    if (e.key === "Enter") {
+      sendAIMessage();
+    }
+  });
+}
+
+async function sendAIMessage() {
+  const userMsg = userInput.value.trim();
+  if (!userMsg) return;
+
+  appendMessage(userMsg, "user-message");
+  userInput.value = "";
+
+  const thinkingEl = appendMessage("Thinking...", "ai-message temp-message");
+
+  try {
+    const aiMsg = await getRealAIResponse(userMsg);
+
+    if (thinkingEl) thinkingEl.remove();
+
+    appendMessage(aiMsg, "ai-message");
+
+    if (typeof getUserData === "function" && typeof saveUserData === "function") {
+      const data = getUserData();
+      if (!data.chatHistory) data.chatHistory = [];
+
+      data.chatHistory.push({
+        user: userMsg,
+        ai: aiMsg,
+        time: new Date().toISOString()
+      });
+
+      saveUserData(data);
+    }
+
+  } catch (error) {
+    console.error("AI Assistant Error:", error);
+
+    if (thinkingEl) thinkingEl.remove();
+
+    appendMessage(
+      "Something went wrong while contacting the AI. Please try again.",
+      "ai-message"
+    );
+  }
+}
+
+function appendMessage(message, className) {
+  if (!chatBox) return null;
+
+  const div = document.createElement("div");
+  div.textContent = message;
+  div.className = className;
+
+  chatBox.appendChild(div);
+  chatBox.scrollTop = chatBox.scrollHeight;
+
+  return div;
+}
+
+async function getRealAIResponse(message) {
+  let data = {};
+  if (typeof getUserData === "function") {
+    data = getUserData();
+  }
+
+  const currentUser = localStorage.getItem("currentUser") || "User";
+
+  const response = await fetch("https://confidmate.tusharkhan5672.workers.dev/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      message,
+      user: {
+        name: currentUser,
+        history: data.chatHistory || []
+      }
+    })
+  });
+
+  if (!response.ok) {
+    let errorText = "Failed to fetch AI response";
+
+    try {
+      const errorData = await response.json();
+      if (errorData && errorData.error) {
+        errorText = errorData.error;
+      }
+    } catch (e) {
+      console.error("Error reading error response:", e);
+    }
+
+    throw new Error(errorText);
+  }
+
+  const result = await response.json();
+  return result.reply || "I’m here. Tell me your topic, audience, and speaking goal.";
+}
+
+
+
+/* =========================
+   AI ASSISTANT END
+========================= */
+
 
 
 
