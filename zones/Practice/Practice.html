@@ -94,6 +94,104 @@
     </div>
   </section>
 
+      <!--------------------------------->
+   <!-- live stage-->
+        <!--------------------------------->
+<section class="zones" id="stage-practice-system">
+  <div class="card glass wide-card">
+    <h3>🎤 Stage Practice System</h3>
+    <p>Speak on the virtual stage, listen back, and get judged like a real practice round.</p>
+
+    <div class="speech-grid">
+      <div class="speech-panel glass-light">
+        <h4>Live Stage Controls</h4>
+
+ <div class="record-controls">
+  <button class="premium-btn" id="startPracticeBtn">Start Practice</button>
+  <button class="secondary-btn" id="stopPracticeBtn" disabled>Stop Practice</button>
+</div>
+
+        <div class="audio-player-wrap glass-light">
+         <h4>Your Recording</h4>
+         <audio id="audioPlayer" controls></audio>
+         <p id="audioStatus">No recording yet. Record something first.</p>
+        </div>
+        <div class="live-status-box">
+          <p class="live-label">Stage Status</p>
+          <h5 id="recordStatus">Ready to begin</h5>
+          <p id="recordHint">Click start and speak naturally. Your practice will be analyzed after you stop.</p>
+        </div>
+
+        <div class="transcript-box glass-light">
+          <h4>Transcript</h4>
+          <p id="speechTranscript">Your spoken words will appear here in real time.</p>        </div>
+      </div>
+
+      
+
+      <div class="speech-panel glass-light">
+        <h4>Speech Breakdown</h4>
+
+        <div class="judge-grid">
+          <div class="judge-box">
+            <span>Duration</span>
+            <strong id="metric-duration">--</strong>
+          </div>
+
+          <div class="judge-box">
+            <span>Words</span>
+            <strong id="metric-words">--</strong>
+          </div>
+
+          <div class="judge-box">
+            <span>Pace</span>
+            <strong id="metric-pace">--</strong>
+          </div>
+
+          <div class="judge-box">
+            <span>Filler Words</span>
+            <strong id="metric-fillers">--</strong>
+          </div>
+        </div>
+
+        <div class="judge-grid">
+          <div class="judge-box">
+            <span>Clarity</span>
+            <strong id="score-clarity">--</strong>
+          </div>
+
+          <div class="judge-box">
+            <span>Confidence</span>
+            <strong id="score-confidence">--</strong>
+          </div>
+
+          <div class="judge-box">
+            <span>Pace Score</span>
+            <strong id="score-pace">--</strong>
+          </div>
+
+          <div class="judge-box">
+            <span>Structure</span>
+            <strong id="score-structure">--</strong>
+          </div>
+        </div>
+
+        <p class="judge-feedback" id="judgeFeedback">
+          Record a speaking round to receive detailed judge feedback.
+        </p>
+
+    
+
+        <p id="compareResult"></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+    <!--------------------------------->
+   <!-- live stage-->
+        <!--------------------------------->
+
   <!-- AI PRACTICE CHAT -->
   <section class="zones" id="practice-chat">
     <div class="card glass">
