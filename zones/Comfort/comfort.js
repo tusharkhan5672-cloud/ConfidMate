@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const userProfile = document.getElementById("userProfile");
       if (userProfile) {
         userProfile.addEventListener("click", () => {
-          window.location.href = "../dashboard/dashboard.html";
+          window.location.href = "../../dashboard/dashboard.html";
         });
       }
 
